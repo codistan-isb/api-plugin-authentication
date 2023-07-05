@@ -9,14 +9,14 @@ export default {
     const accountsServer = injector.get(server_1.AccountsServer);
     const accountsPassword = injector.get(password_1.AccountsPassword);
     let userId;
-    let groupId;
-    const getGroup = await Groups.findOne({ name: "seller" });
+    // let groupId;
+    // const getGroup = await Groups.findOne({ name: "seller" });
     // console.log("getGroup ", getGroup);
-    if (getGroup) {
-      groupId = getGroup._id;
-    } else {
-      groupId = null;
-    }
+    // if (getGroup) {
+    //   groupId = getGroup._id;
+    // } else {
+    //   groupId = null;
+    // }
     // console.log(user);
     // user.push({
     //   groups: [groupId],
@@ -61,7 +61,7 @@ export default {
             provides: "default",
           },
         ],
-        groups: [groupId],
+        // groups: [groupId],
         name: null,
         profile: {
           firstName: user.firstName,
