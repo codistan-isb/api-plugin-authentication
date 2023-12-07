@@ -1,6 +1,13 @@
 import pkg from "../package.json";
 import tokenMiddleware from "./util/tokenMiddleware.js";
 import getAccounts from "./util/accountServer.js";
+import Account from "./resolvers/Account.js";
+
+import importAsString from "@reactioncommerce/api-utils/importAsString.js";
+
+const mySchema = importAsString("./schema.graphql");
+
+import Mutation from "./resolvers/Mutation.js";
 
 /**
  * @summary Registers the authentication plugin
@@ -8,10 +15,13 @@ import getAccounts from "./util/accountServer.js";
  * @returns {undefined}
  */
 export default async function register(app) {
-  const { accountsGraphQL } = await getAccounts(app);
+  const { accountsGraphQL, accountsServer } = await getAccounts(app);
 
+  let ResolverObj = accountsGraphQL.resolvers;
+  ResolverObj["Mutation"] = Mutation
+  ResolverObj["Account"] = Account;
   await app.registerPlugin({
-    label: "Authentication",
+    label: "Authentication-LoS",
     name: "authentication",
     autoEnable: true,
     version: pkg.version,
@@ -24,8 +34,9 @@ export default async function register(app) {
       }
     },
     graphQL: {
+      schemas: [mySchema],
       typeDefsObj: [accountsGraphQL.typeDefs],
-      resolvers: accountsGraphQL.resolvers
+      resolvers: ResolverObj
     },
     expressMiddleware: [
       {
