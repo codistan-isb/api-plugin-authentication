@@ -47,7 +47,10 @@ export default {
       }
       throw error;
     }
-
+const fullname = user.firstName.split(" ");
+console.log("fullname", fullname);
+const firstName = fullname[0];
+const lastName = fullname[1];
     // console.log("userId", userId);
     if (userId) {
       // console.log("user", user);
@@ -62,11 +65,11 @@ export default {
           },
         ],
         // groups: [groupId],
-        name: user.firstName + " " + user.lastName,
+        name: user.firstName,
         referralCode: user.referralCode,
         profile: {
-          firstName: user.firstName,
-          lastName: user.lastName,
+          firstName: firstName,
+          lastName: lastName,
           dob: user.dob,
           phone: user.phoneNumber ? user.phoneNumber : "",
         },
@@ -76,7 +79,6 @@ export default {
         phoneNumber: user.phoneNumber,
       };
       const accountAdded = await Accounts.insertOne(account);
-
       // console.log("added account is ", accountAdded);
     }
     if (!accountsServer.options.enableAutologin) {
